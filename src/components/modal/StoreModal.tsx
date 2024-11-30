@@ -1,11 +1,12 @@
 "use client";
 
 import { useStoreModal } from "@/hooks/useModalStore";
-import React from "react";
+import React, { useState } from "react";
 import Modal from "./Modal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import {
     Form,
     FormControl,
@@ -16,6 +17,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import prismadb from "@/database/db";
 
 const formSchema = z.object({
     name: z.string().min(1),
@@ -32,7 +34,19 @@ export default function StoreModal() {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        try {
+            await fetch("/api/stores", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+            });
+            toast("Store created successfully");
+        } catch (error: any) {
+            console.log("Error in creating store", error);
+            toast(error?.message);
+        }
     };
 
     return (
@@ -68,10 +82,15 @@ export default function StoreModal() {
                             <div className="pt-6 space-x-2 flex items-center justify-end w-full">
                                 <Button
                                     variant="outline"
+                                    disabled={form.formState.isSubmitting}
                                     onClick={modalStore.onClose}>
                                     Cancel
                                 </Button>
-                                <Button type="submit">Continue</Button>
+                                <Button
+                                    type="submit"
+                                    disabled={form.formState.isSubmitting}>
+                                    Continue
+                                </Button>
                             </div>
                         </form>
                     </Form>
