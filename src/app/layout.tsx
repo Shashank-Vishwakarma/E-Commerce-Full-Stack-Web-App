@@ -8,6 +8,7 @@ import {
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ModalProvider from '@/components/providers/ModalProvider';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,6 +44,7 @@ export default function RootLayout({
             <UserButton />
           </SignedIn>
           {children}
+          <ModalProvider />
         </body>
       </html>
     </ClerkProvider>
