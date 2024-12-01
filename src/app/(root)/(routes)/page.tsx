@@ -6,11 +6,11 @@ import { useEffect } from "react";
 
 export default function Home() {
     const onOpen = useStoreModal((state) => state.onOpen);
-    const onClose = useStoreModal((state) => state.onClose);
+    const isOpen = useStoreModal((state) => state.isOpen);
 
     useEffect(() => {
         onOpen();
-    }, [onOpen]);
+    }, [onOpen, isOpen]);
 
-    return <p className="">root page</p>;
+    return null;
 }

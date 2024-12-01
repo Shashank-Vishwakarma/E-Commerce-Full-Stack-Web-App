@@ -1,8 +1,6 @@
 import prismadb from "@/database/db";
 import { auth } from "@clerk/nextjs/server";
-import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { string } from "zod";
 
 export async function POST(req: Request) {
     try {
@@ -29,5 +27,3 @@ export async function POST(req: Request) {
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
-
-export async function GET() {}

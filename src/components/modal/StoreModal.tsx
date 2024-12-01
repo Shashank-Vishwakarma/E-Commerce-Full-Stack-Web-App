@@ -18,6 +18,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import prismadb from "@/database/db";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
     name: z.string().min(1),
@@ -35,14 +36,16 @@ export default function StoreModal() {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await fetch("/api/stores", {
+            const response = await fetch("/api/stores", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(values),
             });
+            const data = await response.json();
             toast("Store created successfully");
+            window.location.assign(`/${data.id}`);
         } catch (error: any) {
             console.log("Error in creating store", error);
             toast(error?.message);
